@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Kivy/Buildozer
+.buildozer/
+bin/
+
+# Editors/OS
+.DS_Store
+*.swp
+.vscode/
+.idea/
