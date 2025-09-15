@@ -1,0 +1,32 @@
+name: Android APK (Buildozer)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache buildozer/.buildozer
+        uses: actions/cache@v4
+        with:
+          path: .buildozer
+          key: buildozer-${{ runner.os }}-${{ hashFiles('**/*') }}
+          restore-keys: buildozer-${{ runner.os }}-
+
+      - name: Build debug APK via Docker
+        run: |
+          docker run --rm -v "$PWD":/home/user/app \
+            kivy/buildozer \
+            buildozer android debug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: keystone-apk
+          path: bin/*-debug.apk
